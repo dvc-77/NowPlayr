@@ -277,17 +277,28 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         NSApplication.shared.activate(ignoringOtherApps: true)
     }
     
+    var settingsWindowController: SettingsWindowController?
+            
     @objc func openSettings(_ sender: AnyObject) {
-        SettingsWindowController(
-            panes: [
-                GeneralSettingsViewController(),
-                AppearanceSettingsViewController(),
-                AboutSettingsViewController()
-            ],
-            style: .toolbarItems,
-            animated: true,
-            hidesToolbarForSingleItem: true
-        ).show()
+        if let existingController = settingsWindowController {
+            if existingController.window?.isVisible == true {
+                existingController.window?.makeKeyAndOrderFront(nil)
+            } else {
+                existingController.show()
+            }
+        } else {
+            settingsWindowController = SettingsWindowController(
+                panes: [
+                    GeneralSettingsViewController(),
+                    AppearanceSettingsViewController(),
+                    AboutSettingsViewController()
+                ],
+                style: .toolbarItems,
+                animated: true,
+                hidesToolbarForSingleItem: true
+            )
+            settingsWindowController?.show()
+        }
     }
     
     // MARK: - Setup
